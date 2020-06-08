@@ -1,0 +1,50 @@
+package Servlet;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import Service.NoticiaService;
+import java.util.ArrayList;
+import Model.Noticia;
+import java.io.PrintWriter;
+
+@WebServlet("/ListarNoticia.do")
+public class ListarNoticia extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	
+		// Pegando a lista de noticias
+		NoticiaService ns = new NoticiaService();
+		
+		// Criando um arrayList para armazenar as noticias que vieram da service
+		ArrayList<Noticia> listaNoticia = ns.listarNoticia();
+		
+		// Definir o tipo de conteudo da resposta
+		response.setContentType("text/html");
+		
+		// Criando um objeto de saida de dados
+		PrintWriter saida = response.getWriter();
+		
+		saida.println("Lista de Noticias Cadastradas:  <br>");
+		
+		//Percorrendo o ArrayList e imprindo os dados da noticia
+		listaNoticia.forEach(n -> {
+			saida.println(n.getDescricao() +":");
+			saida.println("<br>");
+			saida.println(n.getTitulo());
+			saida.println("<br>");
+			saida.println(n.getTextoNoticia());
+			saida.println("<br>");
+			saida.println("<br>");
+		});
+	}	
+		
+
+
+}
